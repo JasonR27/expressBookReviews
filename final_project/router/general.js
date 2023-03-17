@@ -14,7 +14,13 @@ public_users.post("/register", (req,res) => {
 public_users.get('/',function (req, res) {  
   //Write your code here
   let booklist = JSON.stringify(books);
-  return res.status(300).json({message: "This are the available books: ", booklist});
+  let tittles = []
+
+  titles.push(Object.values(books).map(objVal => objVal.title))
+
+  
+
+  return res.status(300).json({message: "This are the available books: ", booklist, message2: 'List by title: ', tittles});
 });
 
 // Get book details based on ISBN
