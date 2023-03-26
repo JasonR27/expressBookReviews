@@ -9,8 +9,9 @@ public_users.post("/register", (req,res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (username && password) {
-      if (!doesExist(username)) { 
+      if (!isValid(username)) { 
         users.push({"username":username,"password":password});
+        console.log(users);
         return res.status(300).json({message: "User successfully registred. Now you can login"});
       } else {
         return res.status(404).json({message: "User already exists!"});    
@@ -23,12 +24,8 @@ public_users.post("/register", (req,res) => {
 public_users.get('/',function (req, res) {  
   //Write your code here
   let booklist = JSON.stringify(books);
-  let titles = [];
-
-  
-  titles.push(Object.values(books).map(objVal => objVal.title + ' by ' + objVal.author)) 
-
-  
+  let titles = [];  
+  titles.push(Object.values(books).map(objVal => objVal.title + ' by ' + objVal.author))   
 
   return res.status(300).json({message: 'This are the Books available', titles});
 });
@@ -69,12 +66,12 @@ public_users.get('/author/:author', function (req, res) {
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
   const title = req.params.title;
-  console.log(author);
+  console.log(title);
   
-  const authorBooks = [];
+  const titleBooks = [];
   
   Object.values(books).forEach((book) => {
-      if (book.title.toLowerCase() === author) {
+      if (book.title.toLowerCase() === title) {
         titleBooks.push(book.title + ' ' + 'by' + ' ' + book.author);
       }
     });
@@ -96,7 +93,7 @@ public_users.get('/review/:isbn',function (req, res) {
   const isbnBook = [books[bookId].title]
   
   return res.status(300).json({
-      message: 'Here is the book for your isbn: ',
+      message: 'Here is the review for your book: ' + books[bookId].title + ' ' + 'by' + ' ' + books[bookId].author,
       review: review,
     });
 });
