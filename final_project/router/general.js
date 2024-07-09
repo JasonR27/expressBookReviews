@@ -4,12 +4,21 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+let users2 = [];
+
+//public_users.use(express.json);
+const app = express();
+
+app.use(express.json());
 
 public_users.post("/register", (req,res) => {
+    console.log("entered register endpoint");
     const username = req.body.username;
     const password = req.body.password;
     if (username && password) {
+        console.log("found username and password");
       if (!isValid(username)) { 
+        console.log("username is valid");
         users.push({"username":username,"password":password});
         console.log(users);
         return res.status(300).json({message: "User successfully registred. Now you can login"});
@@ -88,13 +97,22 @@ public_users.get('/review/:isbn',function (req, res) {
   const bookId = req.params.isbn;
   console.log(bookId);
 
-  const review = books[bookId].review;
+  //const reviews2 = {};
+  const reviews = books[bookId].reviews;
+
+//  let count = 1;
+//  for (let key in books[bookId].reviews) {
+//    console.log("review" + count + books[bookId].reviews[key].review);
+//    reviews.count = books[bookId].reviews[key].review;
+   // count++;
+//}
 
   const isbnBook = [books[bookId].title]
   
   return res.status(300).json({
       message: 'Here is the review for your book: ' + books[bookId].title + ' ' + 'by' + ' ' + books[bookId].author,
-      review: review,
+      reviews: reviews,
+      //sreviews2: reviews2,
     });
 });
 
